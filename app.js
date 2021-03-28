@@ -1,17 +1,23 @@
 const http = require('http');
 const express = require('express');
+const { send } = require('process');
 
 const app = express();
 
-app.use((req, res, next) => {
-    console.log('in the middleware')
-    next() // next() allows the request to continue to the next middleware
+// working with route
+// always running
+app.use('/', (req, res, next) => {
+  console.log('Always Running');
+  next(); // this method allow the request to always running
+});
+app.use('/', (req, res, next) => {
+  console.log('in another middleware');
+  res.send('<h1>Hello from Express</h1>');
 });
 
-app.use((req, res, next) => {
-    console.log('in another middleware')
+app.use('/products', (req, res, next) => {
+  res.send('<h1>Hello from Products</h1>');
 });
 
 // creating Server
-const server = http.createServer(app);
-server.listen(5000);
+app.listen(5000);
